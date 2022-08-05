@@ -1,0 +1,10 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+hd_team_access_right_user,hd_team,model_hd_team,,1,1,1,1
+hd_ticket_manager_access_right_user,hd_ticket_manager,model_hd_ticket,group_helpdesk_manager,1,1,1,1
+hd_ticket_leader_access_right_user,hd_ticket_leader,model_hd_ticket,group_helpdesk_team_leader,1,1,1,1
+hd_ticket_access_right_user,hd_ticket,model_hd_ticket,,1,1,1,0
+hd_tag_access_right_user,hd_tag,model_hd_tag,,1,1,1,1
+tickets_per_team_wizard_access_right_user,tickets_per_team_wizard,model_tickets_per_team_wizard,,1,1,1,1
+tickets_per_team_report_excel_wizard_access_right_user,tickets_per_team_report_excel_wizard,model_tickets_per_team_report_excel_wizard,,1,1,1,1
+tickets_per_team_report_excel_access_right_user,tickets_per_team_report_excel,model_tickets_per_team_report_excel,,1,1,1,1
+

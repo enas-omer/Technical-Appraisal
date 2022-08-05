@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+   <record id='hd_ticket_view_form' model='ir.ui.view'>
+        <field name="name">hd.ticket.form</field>
+        <field name="model">hd.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Ticket">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                    <button name="action_run" type="object" string="Submit" states="new"  class="oe_highlight" />
+
+                    <button name="action_done" type="object" states="in_progress" string="Done"  class="oe_highlight" />
+
+                    <button name="action_cancel" type="object" string="Cancel"  class="oe_highlight" states="in_progress" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1> 
+                            <field name="ticket_id"/> <br/>
+                            <field name="priority" widget="priority" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                                                                 
+                        </h1>
+                     </div>
+                    <group col="2">
+                        <group>
+                            <field name="name" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                             <field name="tag_ids"  
+                                    widget="many2many_tags" 
+                                    options="{'color_field': 'color'}"/>
+                            <field name="time_submitted" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                            <field name="description" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                            <field name="assigned_to" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                            <field name="resolution_time" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                        </group>
+                        <group>
+                            <field name="team" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                            <field name="customer_id" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                            <field name="customer_name" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                            <field name="customer_email" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                            <field name="customer_phone" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                            <field name="hosting_type" attrs="{'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                            <field name="server_url" attrs="{'invisible': [('hosting_type', '!=', 'on_premise')] , 'required': [('hosting_type', '=', 'on_premise')],'readonly': [('state', 'in',  ['solved', 'cancelled'])]}"/>
+                        </group>
+                    </group>
+                   
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Ticket Kanban View  -->
+    <record model="ir.ui.view" id="view_ticket_kanban">
+        <field name="name">hd.ticket.kanban</field>
+        <field name="model">hd.ticket</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1">
+                <field name="name"/>
+                <field name="team"/>
+                <field name="customer_name"/>
+               <!--  <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/> -->
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_res_partner_kanban" style="border-radius:15px;">
+                        <div class="oe_kanban_details">
+                        <strong class="o_kanban_record_title oe_partner_heading" style="font-size:16px;">
+                            <field name="name" style="display:block;"/>
+                        </strong>
+                            <span style="display:block;">Team:<field name="team" /></span>
+                            <span style="display:block;">Customer:<field name="customer_name" /></span>
+                        </div>
+                        </div>
+                    </t>
+                </templates>
+                
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id='hd_ticket_view_tree' model='ir.ui.view'>
+        <field name="name">hd.ticket.tree</field>
+        <field name="model">hd.ticket</field>
+        <field name="arch" type="xml">
+            <tree string="Helpdesk Ticket"  decoration-success="state == 'solved'" decoration-warning="state == 'new'"  decoration-info="state == 'in_progress'">
+                <field name="ticket_id" />
+                <field name="team"/>
+                <field name="name" />
+                <field name="customer_id" />
+                <field name="assigned_to"/>
+                <field name="hosting_type" />
+                <field name="state" readonly="1" widget="badge"  />
+            </tree>
+        </field>
+    </record>
+
+    <record id='hd_all_ticket_action' model='ir.actions.act_window'>
+        <field name="name">All Tickets</field>
+        <field name="res_model">hd.ticket</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new helpdesk ticket
+          </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="hd_my_tickets_action">
+            <field name="name">My Tickets</field>
+            <field name="res_model">hd.ticket</field>
+            <field name="view_id" ref="hd_ticket_view_tree"/>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="domain">[('create_uid','=', uid)]</field>
+    </record>
+
+    <menuitem parent="helpdesk_main_menu" id="ticket_menu" name = "Tickets" sequence="1"/>
+
+    <menuitem action="hd_all_ticket_action" parent="ticket_menu" id="all_ticket_menu" sequence="1"/>
+    <menuitem action="hd_my_tickets_action" parent="ticket_menu" id="my_ticket_menu" sequence="2"/>
+
+
+</odoo>

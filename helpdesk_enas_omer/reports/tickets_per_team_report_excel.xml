@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+  <data>
+
+
+    <record id="view_tickets_per_team_report_excel_wizard" model="ir.ui.view">
+      <field name="name">Part Sales Report</field>
+      <field name="model">tickets.per.team.report.excel.wizard</field>
+      <field name="arch" type="xml">
+        <form string="Tickets Per Team Report Excel">
+			      <group>
+                <field name="team"/>
+            </group>
+            <group>
+              <field name="state"/>
+            </group>
+          <footer>
+            <button name = "print_report"  string="Print"  type="object" class="oe_highlight"/> or
+            <button string="Cancel" class="oe_link" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+      <record model="ir.ui.view" id="view_tickets_per_team_report_excel">
+            <field name="name">tickets.per.team.report.excel</field>
+            <field name="model">tickets.per.team.report.excel</field>
+            <field name="arch" type="xml">
+                <form string="File to Downloads">
+                        <field name="name" invisible="1"/>
+                        <field name="file_download" filename="name"/>
+                </form>
+            </field>
+        </record>
+
+    <record id="action_view_tickets_per_team_report_excel" model="ir.actions.act_window">
+      <field name="name">Tickets Per Team Report Excel</field>
+      <field name="res_model">tickets.per.team.report.excel.wizard</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record>
+
+     <menuitem name="Tickets Per Team Report Excel" id="tickets_per_team_report_excel_menu" parent="menu_reporting" action="action_view_tickets_per_team_report_excel"  sequence="2" groups="helpdesk_enas_omer.group_helpdesk_manager,helpdesk_enas_omer.group_helpdesk_team_leader"
+      />
+
+
+  </data>
+</openerp>

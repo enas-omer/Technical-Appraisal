@@ -1,0 +1,75 @@
+<odoo>
+    <data>
+        <template id="tickets_per_team_template_id">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <center>
+                            <strong style="text-align: center; font-family:'NissanAG-Bold';font-size: 20px;">
+                                <span t-esc="team_name"/> Report 
+                            </strong>
+                        </center>
+                        <table style="border: 2px solid black;" width="100%">
+                         <thead style="border: 1px solid black; border-top: 1;background-color:#808080;">
+                            <tr style="border: 2px solid black;">
+                                <th style="border: 1px solid black; border-top: 0;text-align: center;" rowspan="2">
+                                   Ticket ID
+                                </th>
+                                <th style="border: 1px solid black; text-align: center;" rowspan="2">Name</th>
+                                <th style="border: 1px solid black; text-align: center;" rowspan="2"> Time Submitted
+                                </th>
+                                <th style="border: 1px solid black; text-align: center;" rowspan="2"> Priority
+                                </th>
+                                <th style="border: 1px solid black; text-align: center;" rowspan="2"> Resolution Time
+                                </th>
+                                
+                            </tr>
+                        
+                            </thead>
+                            <t t-foreach="docs" t-as="doc">
+                                <tbody class="sale_tbody">
+                                    <tr style="border: 1px solid black; border-bottom-style: double; background-color:#ddd;">
+                                        <td style="border: 2px solid black; border-bottom-style: double;">
+                                            <span t-esc="doc.ticket_id"/>
+                                        </td>
+                                        <td style="border: 2px solid black; border-top: 0;border-bottom-style: double;">
+                                            <span t-esc="doc.name"/>
+                                        </td>
+                                        
+                                        <td style="border: 2px solid black; border-top: 0;border-style: double;">
+                                             <span t-esc="doc.time_submitted"/>
+                                        </td>
+                                        
+                                        <td style="border: 2px solid black; border-top: 0;border-style: double;">
+                                            <t t-if = "doc.priority">
+                                                <t t-esc="dict(doc.fields_get(allfields=['priority'])['priority']['selection'])[doc.priority]"/>
+                                            </t>
+                                        </td>
+                                        <td style="border: 2px solid black; border-top: 0;border-style: double;">
+                                            <span t-esc="doc.resolution_time"/>
+                                        </td>
+
+                                    </tr>
+                                    
+                                </tbody>
+                            </t>
+                            
+                        </table>
+
+                    </div>   
+                      
+                </t>
+            </t>
+        </template>
+      
+        <report
+            id="tickets_per_team_report"
+            model="hd.ticket"
+            report_type="qweb-pdf"
+            string="Tickets Per Team Report"
+            name="helpdesk_enas_omer.tickets_per_team_template_id"
+            file="Tickets Per Team Report"
+            menu="False"
+        />
+    </data>
+</odoo>
